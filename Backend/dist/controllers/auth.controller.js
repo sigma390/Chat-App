@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = exports.signup = exports.login = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const generateToken_1 = __importDefault(require("../utils/generateToken"));
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send('Login endpoint');
 });
@@ -45,10 +46,17 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             gender,
             profilePic: gender === "male" ? boyPfp : girlPfp
         });
-        yield newUser.save();
-        res.status(201).json({ message: "User Created Successfully",
-            hashedPassword
-        });
+        if (newUser) {
+            (0, generateToken_1.default)(newUser._id, res);
+            yield newUser.save(); //save New User To Database
+            res.status(201).json({ message: "User Created Successfully",
+                hashedPassword,
+                _id: newUser._id
+            });
+        }
+        else {
+            res.status(400).json({ message: "NO new User" });
+        }
     }
     catch (error) {
         res.status(500);

@@ -1,6 +1,7 @@
 import bcrypt from "bcryptjs";
 import express, { Request, Response, Router } from "express";
 import User from "../models/user.model";
+import generatejwt from "../utils/generateToken";
 export const login = async (req: Request, res: Response) => {
     res.send('Login endpoint');
 };
@@ -36,21 +37,25 @@ export const signup = async  (req: Request, res: Response)=> {
             gender,
             profilePic: gender === "male" ? boyPfp : girlPfp
         })
-        await newUser.save();
+        if (newUser) {
+            generatejwt(newUser._id, res)
+            await newUser.save(); //save New User To Database
         res.status(201).json({message : "User Created Successfully",
-            hashedPassword
+            hashedPassword,
+            _id : newUser._id
+            
         })
+            
+        }else{
+            res.status(400).json({message:"NO new User"})
+        }
+        
 
     }
     catch(error)
     {
         res.status(500)
     }
-
-
-    
-
-   
 };
 
 export const logout = (req:Request, res:Response)=>{
