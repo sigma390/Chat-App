@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
+import connectmongo from './db/connect';
 import Authroutes from "./routes/Auth";
 // Load environment variables
 dotenv.config();
@@ -26,5 +27,6 @@ app.use("/", (req:Request, res:Response) => {
 
 // Start the server
 app.listen(port, () => {
+    connectmongo();
     console.log(`Server started on port ${port}`);
 });

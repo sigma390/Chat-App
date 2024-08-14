@@ -8,21 +8,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.signup = exports.login = void 0;
-const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Login endpoint');
-});
-exports.login = login;
-const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const dotenv_1 = __importDefault(require("dotenv"));
+const mongoose_1 = __importDefault(require("mongoose"));
+dotenv_1.default.config();
+const mongoURL = process.env.MONGO_DB_URI; // Assert that the variable is a string
+const connectmongo = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { fullname, username, password, confirmPass, gender } = req.body;
+        if (!mongoURL) {
+            throw new Error("MONGO_DB_URL is not defined");
+        }
+        yield mongoose_1.default.connect(mongoURL);
+        console.log("Connected to MongoDB!");
     }
     catch (error) {
+        console.error("Error connecting to MongoDB:", error);
     }
 });
-exports.signup = signup;
-const logout = (req, res) => {
-    res.send("logout Endpoint");
-};
-exports.logout = logout;
+exports.default = connectmongo;
