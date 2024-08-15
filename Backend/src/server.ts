@@ -1,3 +1,4 @@
+import cookieParser from "cookie-parser";
 import dotenv from 'dotenv';
 import express, { NextFunction, Request, Response } from 'express';
 import connectmongo from './db/connect';
@@ -11,6 +12,7 @@ const port = process.env.PORT || 5000;
 
 // Middleware to parse JSON
 app.use(express.json());
+app.use(cookieParser());
 
 
 //root route 
@@ -31,3 +33,4 @@ app.listen(port, () => {
     connectmongo();
     console.log(`Server started on port ${port}`);
 });
+

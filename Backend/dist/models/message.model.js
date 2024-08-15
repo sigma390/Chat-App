@@ -5,10 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
 const messageSchema = new mongoose_1.default.Schema({
-    senderId: { type: mongoose_1.default.Schema.ObjectId, required: true, ref: "User" },
-    recieverId: { type: mongoose_1.default.Schema.ObjectId, required: true, ref: "User" },
-    messageText: { type: String, required: true },
-    timestamp: { type: Date, default: Date.now }
-});
+    senderId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User', required: true },
+    recieverId: { type: mongoose_1.default.Schema.Types.ObjectId, ref: 'User', required: true }, // Ensure `recieverId` is required
+    messageText: { type: String, required: true }
+}, { timestamps: true });
 const Message = mongoose_1.default.model("Message", messageSchema);
 exports.default = Message;
