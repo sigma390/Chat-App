@@ -7,6 +7,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const connect_1 = __importDefault(require("./db/connect"));
 const Auth_1 = __importDefault(require("./routes/Auth"));
+const Message_routes_1 = __importDefault(require("./routes/Message.routes"));
 // Load environment variables
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -15,6 +16,7 @@ const port = process.env.PORT || 5000;
 app.use(express_1.default.json());
 //root route 
 app.use("/api/auth", Auth_1.default);
+app.use("/api/messages", Message_routes_1.default);
 app.use("/", (req, res) => {
     res.json({
         message: "Its Homepage"
