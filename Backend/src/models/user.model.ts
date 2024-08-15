@@ -32,7 +32,7 @@ const userSchema = new mongoose.Schema<User>({
         type: String,
         default: "default_profile_pic.jpg"
     }
-}
+},{timestamps: true}
 )
 
 const User = mongoose.model<User>("User", userSchema);
