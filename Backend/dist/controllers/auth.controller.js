@@ -83,6 +83,13 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.signup = signup;
 //Logout Method
 const logout = (req, res) => {
-    res.send("logout Endpoint");
+    try {
+        res.cookie("JWT", { maxAge: 0 });
+        res.status(200).json({ message: "Logged Out Successfully" });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
 };
 exports.logout = logout;

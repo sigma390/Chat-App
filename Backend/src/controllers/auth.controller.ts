@@ -81,5 +81,12 @@ export const signup = async  (req: Request, res: Response)=> {
 };
 //Logout Method
 export const logout = (req:Request, res:Response)=>{
-    res.send("logout Endpoint");
+try {
+    res.cookie("JWT", {maxAge:0});
+    res.status(200).json({message: "Logged Out Successfully"});
+    
+} catch (error) {
+        console.error(error);
+        res.status(500).json({message: "Server Error"});
+}
 }
