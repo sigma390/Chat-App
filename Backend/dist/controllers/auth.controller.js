@@ -16,10 +16,28 @@ exports.logout = exports.signup = exports.login = void 0;
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const generateToken_1 = __importDefault(require("../utils/generateToken"));
+//Login Method
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    res.send('Login endpoint');
+    try {
+        const { username, password } = req.body;
+        const user = yield user_model_1.default.findOne({ username: username });
+        if (!user) {
+            return res.status(404).json({ message: "User Not Found" });
+        }
+        const ismatching = yield bcryptjs_1.default.compare(password, (user === null || user === void 0 ? void 0 : user.password) || "");
+        if (!ismatching) {
+            return res.status(401).json({ message: "Invalid Password" });
+        }
+        (0, generateToken_1.default)(user._id, res);
+        res.status(200).json({ message: "Logged in Successfully" });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
 });
 exports.login = login;
+//Signup Method
 const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { fullname, username, password, confirmPass, gender } = req.body;
@@ -63,6 +81,7 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.signup = signup;
+//Logout Method
 const logout = (req, res) => {
     res.send("logout Endpoint");
 };

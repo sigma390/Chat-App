@@ -2,9 +2,31 @@ import bcrypt from "bcryptjs";
 import express, { Request, Response, Router } from "express";
 import User from "../models/user.model";
 import generatejwt from "../utils/generateToken";
+
+//Login Method
 export const login = async (req: Request, res: Response) => {
-    res.send('Login endpoint');
+    try{
+        const {username, password} = req.body;
+        const user = await User.findOne({username: username});
+        if(!user){
+            return res.status(404).json({message: "User Not Found"});
+        }
+        const ismatching = await bcrypt.compare(password, user?.password || "");
+        if(!ismatching){
+            return res.status(401).json({message: "Invalid Password"});
+        }
+        generatejwt(user._id, res);
+        res.status(200).json({message:"Logged in Successfully"});
+
+    }
+    catch(error){
+        console.error(error);
+        res.status(500).json({message: "Server Error"});
+    }
 };
+
+
+//Signup Method
 
 export const signup = async  (req: Request, res: Response)=> {
     try{
@@ -15,7 +37,7 @@ export const signup = async  (req: Request, res: Response)=> {
             return res.status(400).json({message: "Password Dont Match"});
         }
 
-        const   user = await User.findOne({username: username});
+        const user = await User.findOne({username: username});
         if (user) {
             res.status(400).json({message: "user Already exists"});
         }
@@ -57,7 +79,7 @@ export const signup = async  (req: Request, res: Response)=> {
         res.status(500)
     }
 };
-
+//Logout Method
 export const logout = (req:Request, res:Response)=>{
     res.send("logout Endpoint");
 }
