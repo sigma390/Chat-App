@@ -50,8 +50,8 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 // get messages Function
 const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id: userToChatId } = req.params;
-        const senderId = req.user._id;
+        const { id: userToChatId } = req.params; //from url bar 
+        const senderId = req.user._id; //that protected Id user , means The person who has Logged in
         const conversation = yield conversation_model_1.default.findOne({
             participants: { $all: [senderId, userToChatId] }
         }).populate("messages"); //becoz Conversation Model has Array of messages but not text so we used

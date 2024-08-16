@@ -45,8 +45,8 @@ const sendMessage = async (req: any, res: Response) => {
 
 export const getMessages = async (req: any, res: Response) => {
     try {
-        const {id:userToChatId} = req.params;
-        const senderId = req.user._id;
+        const {id:userToChatId} = req.params; //from url bar 
+        const senderId = req.user._id; //that protected Id user , means The person who has Logged in
 
         const conversation = await Conversation.findOne({
             participants: { $all: [senderId, userToChatId] }
