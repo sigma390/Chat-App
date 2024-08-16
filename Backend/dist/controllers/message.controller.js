@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.getMessages = void 0;
 const conversation_model_1 = __importDefault(require("../models/conversation.model"));
 const message_model_1 = __importDefault(require("../models/message.model"));
 // Middleware or route handler for sending a message
@@ -46,4 +47,24 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+// get messages Function
+const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id: userToChatId } = req.params;
+        const senderId = req.user._id;
+        const conversation = yield conversation_model_1.default.findOne({
+            participants: { $all: [senderId, userToChatId] }
+        }).populate("messages"); //becoz Conversation Model has Array of messages but not text so we used
+        //inbuilt method .populate("messages")
+        if (!conversation)
+            res.status(200).json([]);
+        const messages = conversation === null || conversation === void 0 ? void 0 : conversation.messages;
+        res.status(200).json(messages);
+    }
+    catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+exports.getMessages = getMessages;
 exports.default = sendMessage;

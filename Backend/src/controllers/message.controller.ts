@@ -41,4 +41,27 @@ const sendMessage = async (req: any, res: Response) => {
     }
 }
 
+// get messages Function
+
+export const getMessages = async (req: any, res: Response) => {
+    try {
+        const {id:userToChatId} = req.params;
+        const senderId = req.user._id;
+
+        const conversation = await Conversation.findOne({
+            participants: { $all: [senderId, userToChatId] }
+        }).populate("messages"); //becoz Conversation Model has Array of messages but not text so we used
+        //inbuilt method .populate("messages")
+        if(!conversation)res.status(200).json([]);
+        const messages = conversation?.messages;
+        res.status(200).json(messages);
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+
+
 export default sendMessage;
