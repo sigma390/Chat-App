@@ -1,4 +1,14 @@
-const GenderCheckbox = ({ onCheckBoxChange, selectedGender }) => {
+import React from 'react';
+
+interface GenderCheckboxProps {
+  onCheckBoxChange: (gender: 'male' | 'female') => void;
+  selectedGender: 'male' | 'female' | '';
+}
+
+const GenderCheckbox: React.FC<GenderCheckboxProps> = ({
+  onCheckBoxChange,
+  selectedGender,
+}) => {
   return (
     <div className='flex'>
       <div className='form-control'>
@@ -20,7 +30,7 @@ const GenderCheckbox = ({ onCheckBoxChange, selectedGender }) => {
       </div>
       <div className='form-control'>
         <label
-          className={`label gap-2 cursor-pointer  ${
+          className={`label gap-2 cursor-pointer ${
             selectedGender === 'female' ? 'selected' : ''
           }`}
         >
@@ -38,4 +48,5 @@ const GenderCheckbox = ({ onCheckBoxChange, selectedGender }) => {
     </div>
   );
 };
+
 export default GenderCheckbox;

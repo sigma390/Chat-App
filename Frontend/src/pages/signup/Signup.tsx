@@ -2,24 +2,33 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import GenderChkbx from './GenderChkbx';
 
+type Inputs = {
+  fullname: string;
+  username: string;
+  password: string;
+  confirmPass: string;
+  gender: 'male' | 'female' | ''; // Fixed the extra space
+};
+
 const Signup = () => {
   //inputs State management
-  const [inputs, setInputs] = useState({
+  const [inputs, setInputs] = useState<Inputs>({
     fullname: '',
     username: '',
     password: '',
     confirmPass: '',
     gender: '',
   });
+
   //gender Function
-  const handleGender = (gender: string) => {
+  const handleGender = (gender: 'male' | 'female') => {
+    // Updated the type of gender
     setInputs({ ...inputs, gender });
   };
 
   //handle Submit Function
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); //stop refrsh of Page
+    e.preventDefault(); //stop refresh of Page
 
     console.log(inputs);
   };
@@ -39,7 +48,7 @@ const Signup = () => {
             <input
               type='text'
               placeholder='John Doe'
-              className='w-full input input-bordered  h-10'
+              className='w-full input input-bordered h-10'
               value={inputs.fullname}
               onChange={(e) =>
                 setInputs({ ...inputs, fullname: e.target.value })
@@ -69,8 +78,7 @@ const Signup = () => {
             <input
               type='password'
               placeholder='Enter Password'
-              className='w-full input input-bordered h-10
-			  '
+              className='w-full input input-bordered h-10'
               value={inputs.password}
               onChange={(e) =>
                 setInputs({ ...inputs, password: e.target.value })
@@ -92,6 +100,7 @@ const Signup = () => {
               }
             />
           </div>
+
           <GenderChkbx
             onCheckBoxChange={handleGender}
             selectedGender={inputs.gender}
@@ -105,7 +114,7 @@ const Signup = () => {
           </Link>
 
           <div>
-            <button className='btn btn-block btn-sm mt-2 border border-slate-700 glow-button '>
+            <button className='btn btn-block btn-sm mt-2 border border-slate-700 glow-button'>
               Sign Up
             </button>
           </div>
