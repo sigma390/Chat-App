@@ -22,18 +22,18 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { username, password } = req.body;
         const user = yield user_model_1.default.findOne({ username: username });
         if (!user) {
-            return res.status(404).json({ message: "User Not Found" });
+            return res.status(404).json({ message: 'User Not Found' });
         }
-        const ismatching = yield bcryptjs_1.default.compare(password, (user === null || user === void 0 ? void 0 : user.password) || "");
+        const ismatching = yield bcryptjs_1.default.compare(password, (user === null || user === void 0 ? void 0 : user.password) || '');
         if (!ismatching) {
-            return res.status(401).json({ message: "Invalid Password" });
+            return res.status(401).json({ message: 'Invalid Password' });
         }
         (0, generateToken_1.default)(user._id, res);
-        res.status(200).json({ message: "Logged in Successfully" });
+        res.status(200).json({ message: 'Logged in Successfully' });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: 'Server Error' });
     }
 });
 exports.login = login;
@@ -43,11 +43,11 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { fullname, username, password, confirmPass, gender } = req.body;
         //check for password and Confirm Passwords
         if (confirmPass != password) {
-            return res.status(400).json({ message: "Password Dont Match" });
+            return res.status(400).json({ message: 'Password Dont Match' });
         }
         const user = yield user_model_1.default.findOne({ username: username });
         if (user) {
-            res.status(400).json({ message: "user Already exists" });
+            res.status(400).json({ message: 'user Already exists' });
         }
         //hashing passwordss
         const salt = yield bcryptjs_1.default.genSalt(10);
@@ -62,18 +62,22 @@ const signup = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             username,
             password: hashedPassword,
             gender,
-            profilePic: gender === "male" ? boyPfp : girlPfp
+            profilePic: gender === 'male' ? boyPfp : girlPfp,
         });
         if (newUser) {
             (0, generateToken_1.default)(newUser._id, res);
             yield newUser.save(); //save New User To Database
-            res.status(201).json({ message: "User Created Successfully",
+            console.log(newUser);
+            res
+                .status(201)
+                .json({
+                message: 'User Created Successfully',
                 hashedPassword,
-                _id: newUser._id
+                _id: newUser._id,
             });
         }
         else {
-            res.status(400).json({ message: "NO new User" });
+            res.status(400).json({ message: 'NO new User' });
         }
     }
     catch (error) {
@@ -84,12 +88,12 @@ exports.signup = signup;
 //Logout Method
 const logout = (req, res) => {
     try {
-        res.cookie("JWT", { maxAge: 0 });
-        res.status(200).json({ message: "Logged Out Successfully" });
+        res.cookie('JWT', { maxAge: 0 });
+        res.status(200).json({ message: 'Logged Out Successfully' });
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Server Error" });
+        res.status(500).json({ message: 'Server Error' });
     }
 };
 exports.logout = logout;

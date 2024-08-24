@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import useSignup from '../../hooks/useSignup';
 import GenderChkbx from './GenderChkbx';
 
-type Inputs = {
+export type Inputs = {
   fullname: string;
   username: string;
   password: string;
@@ -11,7 +12,7 @@ type Inputs = {
 };
 
 const Signup = () => {
-  //inputs State management
+  // Inputs State Management
   const [inputs, setInputs] = useState<Inputs>({
     fullname: '',
     username: '',
@@ -20,17 +21,19 @@ const Signup = () => {
     gender: '',
   });
 
-  //gender Function
+  // Use Signup Hook
+  const { loading, signup } = useSignup();
+
+  // Gender Function
   const handleGender = (gender: 'male' | 'female') => {
-    // Updated the type of gender
     setInputs({ ...inputs, gender });
   };
 
-  //handle Submit Function
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); //stop refresh of Page
+  // Handle Submit Function
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault(); // Stop page refresh
 
-    console.log(inputs);
+    await signup(inputs);
   };
 
   return (
@@ -114,8 +117,12 @@ const Signup = () => {
           </Link>
 
           <div>
-            <button className='btn btn-block btn-sm mt-2 border border-slate-700 glow-button'>
-              Sign Up
+            <button
+              type='submit'
+              className='btn btn-block btn-sm mt-2 border border-slate-700 glow-button'
+              disabled={loading}
+            >
+              {loading ? 'Signing Up...' : 'Sign Up'}
             </button>
           </div>
         </form>
