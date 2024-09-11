@@ -122,7 +122,11 @@ const Signup = () => {
               className='btn btn-block btn-sm mt-2 border border-slate-700 glow-button'
               disabled={loading}
             >
-              {loading ? 'Signing Up...' : 'Sign Up'}
+              {loading ? (
+                <span className=' loading loading-spinner'></span>
+              ) : (
+                'Sign Up'
+              )}
             </button>
           </div>
         </form>
