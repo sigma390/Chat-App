@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { z } from 'zod';
+import { useAuthContext } from '../context/AuthContext';
 import { Inputs } from '../pages/signup/Signup';
 import { signupSchema } from './Zod schema/zod';
 
@@ -9,6 +10,7 @@ export const backendBaseUrl = 'http://localhost:5000';
 
 const useSignup = () => {
   const [loading, setLoading] = useState(false);
+  const { setAuthUser } = useAuthContext();
 
   const signup = async ({
     fullname,
@@ -37,6 +39,9 @@ const useSignup = () => {
         gender,
       };
       console.log('Data to be sent:', data);
+      //set Local storage so that We Redirect to Home page
+      localStorage.setItem('chat-user', JSON.stringify(data));
+      setAuthUser(data);
 
       setLoading(true);
       console.log('Loading state set to true');
