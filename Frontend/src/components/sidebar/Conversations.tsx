@@ -1,4 +1,5 @@
 import useGetConversations from '../../hooks/useGetConversations';
+import { getRandomEmoji } from '../../utils/emijis';
 import Convo from './Convo';
 
 const Conversations = () => {
@@ -6,12 +7,19 @@ const Conversations = () => {
   console.log(conversations);
   return (
     <div className='py-2 flex flex-col overflow-auto'>
-      <Convo />
-      <Convo />
-      <Convo />
-      <Convo />
-      <Convo />
-      <Convo />
+      {/* //get each Conversations */}
+      {conversations.map((conversation: any, idx) => (
+        <Convo
+          key={conversation._id}
+          conversation={conversation}
+          emoji={getRandomEmoji()}
+          lastIdx={idx === conversations.length - 1}
+        />
+      ))}
+
+      {loading ? (
+        <span className='loading loading-spinner mx-auto'></span>
+      ) : null}
     </div>
   );
 };
