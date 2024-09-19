@@ -1,14 +1,23 @@
 import useConversation from '../../zustand/useConversation';
 
+interface Conversation {
+  _id: string;
+  fullname: string;
+  profilePic: string;
+}
+
 interface ConvoProps {
-  conversation: any;
+  conversation: Conversation;
   lastIdx: boolean;
   emoji: string;
 }
 
 const Convo = ({ conversation, lastIdx, emoji }: ConvoProps) => {
   const { selectedConversation, setSelectedConversation } = useConversation();
+
+  // Check if the current conversation is the selected one
   const isSelected = selectedConversation?._id === conversation._id;
+
   return (
     <>
       <div
@@ -33,4 +42,5 @@ const Convo = ({ conversation, lastIdx, emoji }: ConvoProps) => {
     </>
   );
 };
+
 export default Convo;
