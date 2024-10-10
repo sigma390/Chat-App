@@ -21,8 +21,7 @@ const useSendMessage = () => {
       // Send the POST request using Axios
       const { data } = await axios.post(
         `/api/messages/send/${selectedConversation._id}`,
-        { message: msg }, // Ensure you're sending the message correctly
-        { headers: { 'Content-Type': 'application/json' } }
+        { message: msg } // Ensure you're sending the message correctly
       );
 
       if (data.error) {

@@ -60,7 +60,7 @@ const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         if (!conversation)
             res.status(200).json([]);
         const messages = conversation === null || conversation === void 0 ? void 0 : conversation.messages;
-        res.status(200).json(messages);
+        return res.status(200).json(messages); // Ensure to return after sending response
     }
     catch (error) {
         console.error(error);

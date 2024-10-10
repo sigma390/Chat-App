@@ -55,7 +55,7 @@ export const getMessages = async (req: any, res: Response) => {
     //inbuilt method .populate("messages")
     if (!conversation) res.status(200).json([]);
     const messages = conversation?.messages;
-    res.status(200).json(messages);
+    return res.status(200).json(messages); // Ensure to return after sending response
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Internal Server Error' });
