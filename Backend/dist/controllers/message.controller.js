@@ -18,23 +18,24 @@ const message_model_1 = __importDefault(require("../models/message.model"));
 // Middleware or route handler for sending a message
 const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { messageText } = req.body;
+        const { message } = req.body;
+        console.log(`this is messaage test ${message}`);
         const { id: receiverId } = req.params;
         const senderId = req.user._id;
         // Find or create a conversation between users
         let conversation = yield conversation_model_1.default.findOne({
-            participants: { $all: [senderId, receiverId] }
+            participants: { $all: [senderId, receiverId] },
         });
         if (!conversation) {
             conversation = yield conversation_model_1.default.create({
-                participants: [senderId, receiverId]
+                participants: [senderId, receiverId],
             });
         }
         // Create and save the new message
         const newMessage = new message_model_1.default({
             senderId: senderId,
-            recieverId: receiverId,
-            messageText: messageText
+            receiverId: receiverId,
+            messageText: message,
         });
         yield newMessage.save();
         // Push the new message to the conversation's messages array
@@ -44,17 +45,17 @@ const sendMessage = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 // get messages Function
 const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { id: userToChatId } = req.params; //from url bar 
+        const { id: userToChatId } = req.params; //from url bar
         const senderId = req.user._id; //that protected Id user , means The person who has Logged in
         const conversation = yield conversation_model_1.default.findOne({
-            participants: { $all: [senderId, userToChatId] }
-        }).populate("messages"); //becoz Conversation Model has Array of messages but not text so we used
+            participants: { $all: [senderId, userToChatId] },
+        }).populate('messages'); //becoz Conversation Model has Array of messages but not text so we used
         //inbuilt method .populate("messages")
         if (!conversation)
             res.status(200).json([]);
@@ -63,7 +64,7 @@ const getMessages = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         console.error(error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ message: 'Internal Server Error' });
     }
 });
 exports.getMessages = getMessages;

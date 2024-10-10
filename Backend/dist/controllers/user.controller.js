@@ -21,7 +21,6 @@ const getUsersForSidebar = (req, res) => __awaiter(void 0, void 0, void 0, funct
         if (!loggedInUserId)
             return res.status(400).json({ message: 'User not found' });
         const filteredUsers = yield user_model_1.default.find({ _id: { $ne: loggedInUserId } });
-        console.log(filteredUsers);
         res.status(200).json(filteredUsers);
     }
     catch (error) {

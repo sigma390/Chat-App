@@ -1,16 +1,27 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 interface IMessage {
-    senderId: mongoose.Types.ObjectId;
-    recieverId: mongoose.Types.ObjectId;
-    messageText: string;
+  senderId: mongoose.Types.ObjectId;
+  receiverId: mongoose.Types.ObjectId; // Corrected spelling
+  messageText: string;
 }
 
-const messageSchema = new mongoose.Schema<IMessage>({
-    senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    recieverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Ensure `recieverId` is required
-    messageText: { type: String, required: true }
-}, { timestamps: true });
+const messageSchema = new mongoose.Schema<IMessage>(
+  {
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    receiverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    }, // Corrected spelling
+    messageText: { type: String, required: true }, // Ensure messageText is a required string
+  },
+  { timestamps: true }
+);
 
-const Message = mongoose.model("Message", messageSchema);
+const Message = mongoose.model('Message', messageSchema);
 export default Message;
