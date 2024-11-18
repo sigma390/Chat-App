@@ -1,30 +1,18 @@
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import { useQuery } from '@tanstack/react-query';
+
+import userService from '../services/userService';
 
 const useGetConversations = () => {
-	const [loading, setLoading] = useState(false);
-	const [conversations, setConversations] = useState([]);
+  // Use the useQuery hook to fetch conversations from the backend
 
-	useEffect(() => {
-		const getConversations = async () => {
-			setLoading(true);
-			try {
-				const res = await fetch("/api/users");
-				const data = await res.json();
-				if (data.error) {
-					throw new Error(data.error);
-				}
-				setConversations(data);
-			} catch (error) {
-				toast.error(error.message);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		getConversations();
-	}, []);
-
-	return { loading, conversations };
+  return useQuery({
+    queryKey: ['conversations'], // Make sure this key is unique and matches where it's used in the app
+    queryFn: () => userService.getAll(''), // This calls the getAll method of authService
+    onError: (error) => {
+      // Handle error (you can also use a toast notification here)
+      console.error('Error fetching conversations:', error.message);
+    },
+  });
 };
+
 export default useGetConversations;

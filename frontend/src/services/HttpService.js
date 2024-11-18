@@ -7,11 +7,13 @@ class HttpService {
   }
   //Get Method
   get = async (id) => {
-    return fetch(this.endPoint + '/' + id)
-      .then((response) => response.json())
-      .catch((error) => console.log(error));
+    return axiosInstance.get(this.endPoint + '/' + id);
   };
   //Post method
+
+  getAll = async () => {
+    return axiosInstance.get(this.endPoint);
+  };
 
   post = async (path, data) => {
     const config = {
